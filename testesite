@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extrator de Características Sonoras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #upload-btn {
+            margin-bottom: 20px;
+        }
+        #waveform {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #spectrogram {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #fourier-transform {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #mfccs {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <!-- Adicione os links para as bibliotecas Wavesurfer.js e Chart.js -->
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Extrator de Características Sonoras</h1>
+    <input type="file" id="upload-btn">
+    <div id="waveform"></div>
+    <div id="spectrogram"></div>
+    <div id="fourier-transform"></div>
+    <div id="mfccs"></div>
+
+    <script>
+        document.getElementById('upload-btn').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var audioData = event.target.result;
+                processAudio(audioData);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function processAudio(audioData) {
+            var arrayBuffer = new Uint8Array(audioData);
+            var blob = new Blob([arrayBuffer]);
+            var formData = new FormData();
+            formData.append('audio', blob);
+
+            fetch('/extract', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayWaveform(data.waveform);
+                displaySpectrogram(data.spectrogram);
+                displayFourierTransform(data.fourier_transform);
+                displayMFCCs(data.mfccs);
+            })
+            .catch(error => console.error(error));
+        }
+
+        function displayWaveform(waveform) {
+            var canvas = document.getElementById('waveform');
+            // Use uma biblioteca de visualização de formas de onda (por exemplo, Wavesurfer.js) para exibir o waveform no canvas
+        }
+
+        function displaySpectrogram(spectrogram) {
+            var canvas = document.getElementById('spectrogram');
+            // Use uma biblioteca de visualização de espectrograma (por exemplo, Wavesurfer.js) para exibir o espectrograma no canvas
+        }
+
+        function displayFourierTransform(fourierTransform) {
+            var canvas = document.getElementById('fourier-transform');
+            // Use uma biblioteca de visualização de gráficos (por exemplo, Chart.js) para exibir a Transformada de Fourier no canvas
+        }
+
+        function displayMFCCs(mfccs) {
+            var canvas = document.getElementById('mfccs');
+            // Use uma biblioteca de visualização de gráficos (por exemplo, Chart.js) para exibir os MFCCs no canvas
+        }
+    </script>
+</body>
+</html>
+
+echo "# projetoanalise" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/glenda1235/projetoanalise.git
+git push -u origin main
